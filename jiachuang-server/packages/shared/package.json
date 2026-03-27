@@ -1,0 +1,12 @@
+{
+  "name": "@jiachuang/shared",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "test": "vitest run --config vitest.config.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vitest": "^3.0.8"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "jiachuang",
+  "private": true,
+  "packageManager": "pnpm@10.6.0",
+  "scripts": {
+    "test:api": "corepack pnpm --filter @jiachuang/api test:e2e",
+    "test:shared": "corepack pnpm --filter @jiachuang/shared test",
+    "test:mobile": "corepack pnpm --filter @jiachuang/mobile test"
+  }
+}
