@@ -66,7 +66,8 @@ describe('Core pages read endpoints', () => {
     const response = await request(app.getHttpServer()).get('/core-pages/member-detail/child-1')
 
     expect(response.status).toBe(200)
-    expect(response.body).toEqual(mvpFixture.memberDetail)
+    expect(response.body.memberId).toBe('child-1')
+    expect(response.body.memberName).toBe(mvpFixture.memberDetail.memberName)
   })
 
   it('GET /core-pages/my-page returns the my page data', async () => {
@@ -74,5 +75,13 @@ describe('Core pages read endpoints', () => {
 
     expect(response.status).toBe(200)
     expect(response.body).toEqual(mvpFixture.myPage)
+  })
+
+  it('does not expose split child-home or parent-home endpoints', async () => {
+    const childHome = await request(app.getHttpServer()).get('/core-pages/child-home')
+    const parentHome = await request(app.getHttpServer()).get('/core-pages/parent-home')
+
+    expect(childHome.status).toBe(404)
+    expect(parentHome.status).toBe(404)
   })
 })

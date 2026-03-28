@@ -1,1 +1,1 @@
-export type MemberRole = 'Parent' | 'Child'
+export type MemberRole = 'child' | 'parent'
