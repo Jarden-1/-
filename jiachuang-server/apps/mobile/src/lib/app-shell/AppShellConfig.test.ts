@@ -13,4 +13,11 @@ describe('mobile app shell configuration', () => {
   it('registers the expo-router config plugin', () => {
     expect(appJson.expo.plugins).toContain('expo-router')
   })
+
+  it('allows mobile clients to reach the current HTTP backend during development', () => {
+    expect(appJson.expo.android?.usesCleartextTraffic).toBe(true)
+    expect(appJson.expo.ios?.infoPlist?.NSAppTransportSecurity?.NSAllowsArbitraryLoads).toBe(
+      true,
+    )
+  })
 })

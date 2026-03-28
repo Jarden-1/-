@@ -1,25 +1,36 @@
+import { useCallback } from 'react'
 import { StyleSheet, Text, TextInput, View } from 'react-native'
 
 import { mobileApiClient } from '../../lib/api/client'
+import { useRemotePageData } from '../../lib/api/use-remote-page-data'
 import { ScreenContainer } from '../../lib/ui/ScreenContainer'
 import { SectionTitle } from '../../lib/ui/SectionTitle'
 
 export function FeedbackScreen() {
-  const feedbackPage = mobileApiClient.getFeedbackPage()
+  const loadFeedbackPage = useCallback(() => mobileApiClient.getFeedbackPage(), [])
+  const feedbackPage = useRemotePageData({
+    fallbackData: mobileApiClient.getFallbackFeedbackPage(),
+    load: loadFeedbackPage,
+  })
+  const fallback = mobileApiClient.getFallbackFeedbackPage()
 
   return (
     <ScreenContainer>
-      <SectionTitle eyebrow="反馈页" title={feedbackPage.title} />
-      <Text style={styles.description}>{feedbackPage.description}</Text>
+      <SectionTitle eyebrow="反馈页" title={feedbackPage.title ?? fallback.title} />
+      <Text style={styles.description}>{feedbackPage.description ?? fallback.description}</Text>
       <View style={styles.row}>
-        {feedbackPage.reactionOptions.map((option) => (
+        {(feedbackPage.reactionOptions ?? fallback.reactionOptions).map((option) => (
           <Text key={option.id} style={styles.reaction}>
             {option.label}
           </Text>
         ))}
       </View>
-      <TextInput placeholder={feedbackPage.commentPlaceholder} readOnly style={styles.input} />
-      <Text style={styles.button}>{feedbackPage.submitLabel}</Text>
+      <TextInput
+        placeholder={feedbackPage.commentPlaceholder ?? fallback.commentPlaceholder}
+        readOnly
+        style={styles.input}
+      />
+      <Text style={styles.button}>{feedbackPage.submitLabel ?? fallback.submitLabel}</Text>
     </ScreenContainer>
   )
 }

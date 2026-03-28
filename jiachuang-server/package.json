@@ -3,6 +3,9 @@
   "private": true,
   "packageManager": "pnpm@10.6.0",
   "scripts": {
+    "build:shared": "corepack pnpm --filter @jiachuang/shared build",
+    "build:api": "corepack pnpm build:shared && corepack pnpm --filter @jiachuang/api build",
+    "start:api": "corepack pnpm --filter @jiachuang/api start",
     "test:api": "corepack pnpm --filter @jiachuang/api test:e2e",
     "test:shared": "corepack pnpm --filter @jiachuang/shared test",
     "test:mobile": "corepack pnpm --filter @jiachuang/mobile test"

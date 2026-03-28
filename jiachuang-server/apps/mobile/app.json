@@ -4,6 +4,16 @@
     "slug": "jiachuang-mobile",
     "version": "0.0.0",
     "orientation": "portrait",
-    "plugins": ["expo-router"]
+    "plugins": ["expo-router"],
+    "android": {
+      "usesCleartextTraffic": true
+    },
+    "ios": {
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
+    }
   }
 }

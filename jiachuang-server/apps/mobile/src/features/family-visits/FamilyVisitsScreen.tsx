@@ -1,24 +1,34 @@
+import { useCallback } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
 import { mobileApiClient } from '../../lib/api/client'
+import { useRemotePageData } from '../../lib/api/use-remote-page-data'
 import { ScreenContainer } from '../../lib/ui/ScreenContainer'
 import { SectionTitle } from '../../lib/ui/SectionTitle'
 
 export function FamilyVisitsScreen() {
-  const familyVisits = mobileApiClient.getFamilyVisitsPage()
+  const loadFamilyVisitsPage = useCallback(() => mobileApiClient.getFamilyVisitsPage(), [])
+  const familyVisits = useRemotePageData({
+    fallbackData: mobileApiClient.getFallbackFamilyVisitsPage(),
+    load: loadFamilyVisitsPage,
+  })
+  const fallback = mobileApiClient.getFallbackFamilyVisitsPage()
+  const latestVisit = familyVisits.latestVisit ?? fallback.latestVisit
+  const topVisitor = familyVisits.topVisitorInPastWeek ?? fallback.topVisitorInPastWeek
+  const records = familyVisits.records ?? fallback.records
 
   return (
     <ScreenContainer>
       <SectionTitle eyebrow="家人来访" title="被看见的记录" />
       <View style={styles.summaryCard}>
-        <Text style={styles.primary}>{familyVisits.totalVisitLabel}</Text>
+        <Text style={styles.primary}>{familyVisits.totalVisitLabel ?? fallback.totalVisitLabel}</Text>
         <Text style={styles.secondary}>
-          最近一次：{familyVisits.latestVisit.visitorName} {familyVisits.latestVisit.visitedAtLabel}
+          最近一次：{latestVisit.visitorName} {latestVisit.visitedAtLabel}
         </Text>
-        <Text style={styles.secondary}>{familyVisits.topVisitorInPastWeek.summary}</Text>
+        <Text style={styles.secondary}>{topVisitor.summary}</Text>
       </View>
       <View style={styles.list}>
-        {familyVisits.records.map((record) => (
+        {records.map((record) => (
           <View key={record.id} style={styles.record}>
             <Text style={styles.recordName}>{record.visitorName}</Text>
             <Text style={styles.recordTime}>{record.visitedAtLabel}</Text>
