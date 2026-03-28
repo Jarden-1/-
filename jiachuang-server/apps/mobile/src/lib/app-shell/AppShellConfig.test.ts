@@ -15,7 +15,11 @@ describe('mobile app shell configuration', () => {
   })
 
   it('allows mobile clients to reach the current HTTP backend during development', () => {
-    expect(appJson.expo.android?.usesCleartextTraffic).toBe(true)
+    const buildPropertiesPlugin = appJson.expo.plugins.find(
+      (plugin) => Array.isArray(plugin) && plugin[0] === 'expo-build-properties',
+    ) as [string, { android?: { usesCleartextTraffic?: boolean } }] | undefined
+
+    expect(buildPropertiesPlugin?.[1]?.android?.usesCleartextTraffic).toBe(true)
     expect(appJson.expo.ios?.infoPlist?.NSAppTransportSecurity?.NSAllowsArbitraryLoads).toBe(
       true,
     )
