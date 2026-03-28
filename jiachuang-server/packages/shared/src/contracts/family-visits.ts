@@ -1,8 +1,20 @@
+export interface FamilyVisitRecord {
+  id: string
+  visitorId: string
+  visitorName: string
+  visitedAtLabel: string
+}
+
 export interface FamilyVisitsPageData {
-  seenBySummary: string
-  recentVisitors: {
-    memberId: string
-    name: string
-    lastVisitedAt: string
-  }[]
+  totalVisitCount: number
+  totalVisitLabel: string
+  latestVisit: {
+    visitorName: string
+    visitedAtLabel: string
+  }
+  topVisitorInPastWeek: {
+    visitorName: string
+    summary: string
+  }
+  records: readonly FamilyVisitRecord[]
 }

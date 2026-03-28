@@ -45,6 +45,10 @@ describe('Core pages write endpoints', () => {
 
     expect(response.status).toBe(201)
     expect(response.body.reaction).toBe('放心了')
+    expect(response.body.reactionSummary[0]).toEqual({
+      label: '放心了',
+      count: 1,
+    })
   })
 
   it('POST /core-pages/statuses/:id/comments records a one-line comment', async () => {

@@ -36,8 +36,10 @@ export class CorePagesStore {
   }
 
   getMemberDetail(memberId: string) {
-    // MVP: 忽略 memberId，只返回 canonical 示例
-    return mvpFixture.memberDetail
+    return {
+      ...mvpFixture.memberDetail,
+      memberId,
+    }
   }
 
   getMyPage() {
@@ -57,7 +59,24 @@ export class CorePagesStore {
 
   addReaction(statusId: string, reaction: string) {
     this.reactions.push({ statusId, reaction })
-    const reactionSummary = this.reactions.filter((r) => r.statusId === statusId)
+    const reactionSummary = this.reactions
+      .filter((entry) => entry.statusId === statusId)
+      .reduce<Array<{ label: string; count: number }>>((summary, entry) => {
+        const existing = summary.find((item) => item.label === entry.reaction)
+
+        if (existing) {
+          existing.count += 1
+          return summary
+        }
+
+        summary.push({
+          label: entry.reaction,
+          count: 1,
+        })
+
+        return summary
+      }, [])
+
     return reactionSummary
   }
 
